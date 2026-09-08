@@ -22,7 +22,8 @@ One row of the answer, shortened:
 {"exposure_id": "0026624dec7b6d9f",
  "award_id": "SPE2DP25F109W",
  "company_id": "a4fdd4a7530f4962",
- "company_name": "PFIZER INC",
+ "company_name": "TEVA PHARMACEUTICALS USA, INC.",
+ "company_key": "teva pharmaceuticals usa",
  "shortage_id": "022c478fb3af28c4",
  "confidence": "probable",
  "match_method": "company_name_normalized"}
