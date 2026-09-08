@@ -9,7 +9,7 @@ Spustenie:
     python3 -m mcp_server.server
 
 Premenné:
-    EPITAXY_API_URL   základ API, predvolene https://api.crossgrain.xyz
+    EPITAXY_API_URL   základ API, predvolene https://drugs.crossgrain.xyz
     EPITAXY_API_KEY   nepovinný, bez neho beží bezplatná vrstva
 """
 
@@ -20,9 +20,16 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-API_URL = os.environ.get("EPITAXY_API_URL", "https://api.crossgrain.xyz")
+API_URL = os.environ.get("EPITAXY_API_URL", "https://drugs.crossgrain.xyz")
+
+# Zaloha na obdobie, kym Railway vyda certifikat pre subdomenu.
+# Klient tak funguje aj v case, ked domena este nebezi. Az certifikat
+# bude, zaloha sa moze odstranit, ale skodit nebude ani potom.
+FALLBACK_URL = os.environ.get(
+    "EPITAXY_API_FALLBACK_URL",
+    "https://api-production-16c2.up.railway.app")
 API_KEY = os.environ.get("EPITAXY_API_KEY")
-USER_AGENT = "epitaxy-mcp/0.1"
+USER_AGENT = "epitaxy-mcp/0.1.1"
 PROTOCOL_VERSION = "2025-06-18"
 
 TOOLS = [
@@ -105,25 +112,35 @@ TOOL_PATHS = {
 }
 
 
-def call_api(path, params):
-    query = urllib.parse.urlencode(
-        dict((k, v) for k, v in params.items() if v not in (None, "")))
-    url = "%s%s%s" % (API_URL, path, ("?" + query) if query else "")
+def _fetch(base, path, query):
+    url = "%s%s%s" % (base, path, ("?" + query) if query else "")
     headers = {"User-Agent": USER_AGENT, "Accept": "application/json"}
     if API_KEY:
         headers["X-API-Key"] = API_KEY
     request = urllib.request.Request(url, headers=headers)
-    try:
-        with urllib.request.urlopen(request, timeout=30) as response:
-            return json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as exc:
-        body = exc.read().decode("utf-8", "replace")
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return json.loads(response.read().decode("utf-8"))
+
+
+def call_api(path, params):
+    query = urllib.parse.urlencode(
+        dict((k, v) for k, v in params.items() if v not in (None, "")))
+    bases = [API_URL]
+    if FALLBACK_URL and FALLBACK_URL != API_URL:
+        bases.append(FALLBACK_URL)
+    last = None
+    for base in bases:
         try:
-            return json.loads(body)
-        except ValueError:
-            return {"error": "http_%d" % exc.code, "body": body[:500]}
-    except Exception as exc:
-        return {"error": "network", "message": str(exc)[:200]}
+            return _fetch(base, path, query)
+        except urllib.error.HTTPError as exc:
+            body = exc.read().decode("utf-8", "replace")
+            try:
+                return json.loads(body)
+            except ValueError:
+                return {"error": "http_%d" % exc.code, "body": body[:500]}
+        except Exception as exc:
+            last = exc
+    return {"error": "network", "message": str(last)[:200]}
 
 
 def handle(message):
@@ -136,7 +153,7 @@ def handle(message):
             "result": {
                 "protocolVersion": PROTOCOL_VERSION,
                 "capabilities": {"tools": {}},
-                "serverInfo": {"name": "epitaxy", "version": "0.1.0"},
+                "serverInfo": {"name": "epitaxy", "version": "0.1.1"},
                 "instructions": (
                     "Data o vypadkoch a stiahnutiach liekov spojene s "
                     "federalnymi kontraktmi. Vzdy citaj pole confidence."),
