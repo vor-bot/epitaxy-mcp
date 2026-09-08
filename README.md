@@ -16,6 +16,18 @@ almost never name the drug, so we say so instead of pretending otherwise.
 curl https://drugs.crossgrain.xyz/v1/exposure?limit=5
 ```
 
+One row of the answer, shortened:
+
+```json
+{"exposure_id": "0026624dec7b6d9f",
+ "award_id": "SPE2DP25F109W",
+ "company_id": "a4fdd4a7530f4962",
+ "company_name": "PFIZER INC",
+ "shortage_id": "022c478fb3af28c4",
+ "confidence": "probable",
+ "match_method": "company_name_normalized"}
+```
+
 ## MCP
 
 Remote, nothing to install:
@@ -50,7 +62,23 @@ different source or is guessing.
 
 Works forever, no key, no signup. Returns at most 20 rows, without the
 `evidence` field, without `weak` matches, and with data delayed by 24
-hours. Nothing is stored: no counters, no IP addresses.
+hours. Nothing is stored: no counters, no IP addresses. If a version
+that old does not exist yet, you get the oldest one available, so the
+free tier is never empty while data exists.
+
+## Addressing
+
+These two addresses are the same segment and both work permanently:
+
+```
+https://drugs.crossgrain.xyz/v1/exposure
+https://drugs.crossgrain.xyz/drugs/v1/exposure
+```
+
+Later segments arrive as `/devices/v1/...`, `/food/v1/...` and so on. A
+path whose segment is reserved but not live yet answers `404` with
+`segment_not_live`, it never returns another segment's data. An address
+that has been published is never withdrawn.
 
 ## Paid
 

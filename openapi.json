@@ -3,17 +3,22 @@
   "info": {
     "title": "epitaxy, drug supply risk",
     "version": "0.1.0",
-    "description": "Tvrdime: tento dodavatel vlady ma u FDA aktivny vypadok alebo stiahnutie. Netvrdime, ze konkretny kontrakt dodava konkretny liek. Kazdy riadok spojenia nesie confidence exact, probable alebo weak. Cross source spojenie nikdy nie je exact."
+    "description": "We claim: this government supplier has an active FDA shortage or recall. We do NOT claim that a given contract delivers a given drug. Every joined row carries confidence exact, probable or weak. A cross source join is never exact. The free tier needs no signup and no key."
   },
   "servers": [
     {
-      "url": "https://drugs.crossgrain.xyz"
+      "url": "https://drugs.crossgrain.xyz",
+      "description": "segment drug-supply-risk, paths without prefix"
+    },
+    {
+      "url": "https://drugs.crossgrain.xyz/drugs",
+      "description": "the same segment with its prefix, equivalent"
     }
   ],
   "paths": {
     "/v1/meta": {
       "get": {
-        "summary": "cerstvost dat, pocet zivych segmentov, stav behu",
+        "summary": "data freshness, live segment count, last run",
         "parameters": [
           {
             "name": "limit",
@@ -60,14 +65,17 @@
             }
           },
           "402": {
-            "description": "platba vyzadovana"
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
           }
         }
       }
     },
     "/v1/shortages": {
       "get": {
-        "summary": "vypadky liekov podla FDA",
+        "summary": "FDA drug shortages",
         "parameters": [
           {
             "name": "limit",
@@ -114,14 +122,17 @@
             }
           },
           "402": {
-            "description": "platba vyzadovana"
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
           }
         }
       }
     },
     "/v1/recalls": {
       "get": {
-        "summary": "stiahnutia liekov podla FDA",
+        "summary": "FDA drug recalls and enforcement reports",
         "parameters": [
           {
             "name": "limit",
@@ -168,14 +179,17 @@
             }
           },
           "402": {
-            "description": "platba vyzadovana"
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
           }
         }
       }
     },
     "/v1/contracts": {
       "get": {
-        "summary": "federalne kontrakty na lieky, PSC 6505",
+        "summary": "federal drug contracts, PSC 6505",
         "parameters": [
           {
             "name": "limit",
@@ -222,14 +236,17 @@
             }
           },
           "402": {
-            "description": "platba vyzadovana"
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
           }
         }
       }
     },
     "/v1/exposure": {
       "get": {
-        "summary": "spojenie kontraktu s vypadkom alebo stiahnutim",
+        "summary": "the join: contract supplier with a shortage or recall",
         "parameters": [
           {
             "name": "limit",
@@ -276,7 +293,10 @@
             }
           },
           "402": {
-            "description": "platba vyzadovana"
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
           }
         }
       }
@@ -287,6 +307,100 @@
         "responses": {
           "200": {
             "description": "JSON-RPC"
+          }
+        }
+      }
+    },
+    "/v1/exposure/company/{company_id}": {
+      "get": {
+        "summary": "every join row for one company",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
+          }
+        }
+      }
+    },
+    "/v1/exposure/contract/{award_id}": {
+      "get": {
+        "summary": "every join row for one federal award",
+        "parameters": [
+          {
+            "name": "award_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "payment required"
+          },
+          "404": {
+            "description": "segment reserved but not live yet"
           }
         }
       }
