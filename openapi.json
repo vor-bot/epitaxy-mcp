@@ -1,0 +1,304 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "epitaxy, drug supply risk",
+    "version": "0.1.0",
+    "description": "Tvrdime: tento dodavatel vlady ma u FDA aktivny vypadok alebo stiahnutie. Netvrdime, ze konkretny kontrakt dodava konkretny liek. Kazdy riadok spojenia nesie confidence exact, probable alebo weak. Cross source spojenie nikdy nie je exact."
+  },
+  "servers": [
+    {
+      "url": "https://drugs.crossgrain.xyz"
+    }
+  ],
+  "paths": {
+    "/v1/meta": {
+      "get": {
+        "summary": "cerstvost dat, pocet zivych segmentov, stav behu",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "min_confidence",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "probable",
+                "weak"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "platba vyzadovana"
+          }
+        }
+      }
+    },
+    "/v1/shortages": {
+      "get": {
+        "summary": "vypadky liekov podla FDA",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "min_confidence",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "probable",
+                "weak"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "platba vyzadovana"
+          }
+        }
+      }
+    },
+    "/v1/recalls": {
+      "get": {
+        "summary": "stiahnutia liekov podla FDA",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "min_confidence",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "probable",
+                "weak"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "platba vyzadovana"
+          }
+        }
+      }
+    },
+    "/v1/contracts": {
+      "get": {
+        "summary": "federalne kontrakty na lieky, PSC 6505",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "min_confidence",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "probable",
+                "weak"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "platba vyzadovana"
+          }
+        }
+      }
+    },
+    "/v1/exposure": {
+      "get": {
+        "summary": "spojenie kontraktu s vypadkom alebo stiahnutim",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "min_confidence",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "probable",
+                "weak"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "zoznam",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tier": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "platba vyzadovana"
+          }
+        }
+      }
+    },
+    "/v1/mcp": {
+      "post": {
+        "summary": "MCP, streamable HTTP transport",
+        "responses": {
+          "200": {
+            "description": "JSON-RPC"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      }
+    }
+  }
+}

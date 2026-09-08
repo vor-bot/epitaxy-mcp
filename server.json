@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "xyz.crossgrain/epitaxy",
+  "description": "Federal drug shortages and recalls joined to the federal contracts that buy those drugs. Every join carries a confidence level and the method that produced it.",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/vor-bot/epitaxy-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "websiteUrl": "https://docs.crossgrain.xyz",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "epitaxy-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "EPITAXY_API_URL",
+          "description": "Base URL of the API. Defaults to https://drugs.crossgrain.xyz",
+          "isRequired": false,
+          "default": "https://drugs.crossgrain.xyz"
+        },
+        {
+          "name": "EPITAXY_API_KEY",
+          "description": "Optional. Without it the free tier is used: 20 rows, no evidence, no weak matches, data delayed by 24 hours. No signup required.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://drugs.crossgrain.xyz/v1/mcp"
+    }
+  ]
+}
