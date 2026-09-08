@@ -1,20 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
   "name": "xyz.crossgrain/epitaxy",
-  "description": "Federal drug shortages and recalls joined to the federal contracts that buy those drugs. Every join carries a confidence level and the method that produced it.",
-  "status": "active",
+  "description": "Federal drug shortages and recalls joined to the federal contracts that buy those drugs.",
   "repository": {
     "url": "https://github.com/vor-bot/epitaxy-mcp",
     "source": "github"
   },
-  "version": "0.1.1",
-  "websiteUrl": "https://docs.crossgrain.xyz",
+  "version": "0.1.2",
+  "websiteUrl": "https://drugs.crossgrain.xyz/docs",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "epitaxy-mcp",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "transport": {
         "type": "stdio"
       },

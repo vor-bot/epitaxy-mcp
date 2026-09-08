@@ -67,4 +67,4 @@ hours. Nothing is stored: no counters, no IP addresses.
 - USAspending, public domain, code under CC0
 
 Data is unvalidated and must not be used for medical decisions.
-This project is MIT licensed. Docs: https://docs.crossgrain.xyz
+This project is MIT licensed. Docs: https://drugs.crossgrain.xyz/docs
