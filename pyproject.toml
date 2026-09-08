@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "epitaxy-mcp"
-version = "0.1.2"
+version = "0.1.3"
 description = "MCP server for federal drug shortages and recalls joined to federal drug contracts"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -25,7 +25,7 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://drugs.crossgrain.xyz/docs"
-Source = "https://github.com/vor-bot/epitaxy"
+Source = "https://github.com/vor-bot/epitaxy-mcp"
 API = "https://drugs.crossgrain.xyz/openapi.json"
 
 [project.scripts]

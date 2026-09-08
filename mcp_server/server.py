@@ -29,7 +29,7 @@ FALLBACK_URL = os.environ.get(
     "EPITAXY_API_FALLBACK_URL",
     "https://api-production-16c2.up.railway.app")
 API_KEY = os.environ.get("EPITAXY_API_KEY")
-USER_AGENT = "epitaxy-mcp/0.1.2"
+USER_AGENT = "epitaxy-mcp/0.1.3"
 PROTOCOL_VERSION = "2025-06-18"
 
 TOOLS = [
@@ -153,7 +153,7 @@ def handle(message):
             "result": {
                 "protocolVersion": PROTOCOL_VERSION,
                 "capabilities": {"tools": {}},
-                "serverInfo": {"name": "epitaxy", "version": "0.1.2"},
+                "serverInfo": {"name": "epitaxy", "version": "0.1.3"},
                 "instructions": (
                     "Data o vypadkoch a stiahnutiach liekov spojene s "
                     "federalnymi kontraktmi. Vzdy citaj pole confidence."),
